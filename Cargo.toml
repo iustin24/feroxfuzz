@@ -47,7 +47,7 @@ tokio = { version = "1.20", optional = true, features = [
 num = { version = "0.4" }
 cfg-if = { version = "1.0" }
 dyn-clone = { version = "1.0.9" }
-libafl = { version = "0.8.1", default-features = false, features = ["std"] }
+libafl = { git = "https://github.com/AFLplusplus/LibAFL", default-features = false, features = ["std"] }
 url = { version = "2.2", features = ["serde"] }
 ## optional
 serde = { version = "1.0", optional = true, features = ["derive", "rc"] }
