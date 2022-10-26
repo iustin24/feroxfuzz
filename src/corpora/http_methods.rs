@@ -140,6 +140,7 @@ impl HttpMethodsCorpus {
             _name_state: PhantomData,
         }
     }
+    
     #[inline]
     pub fn with_methods<I, T>(http_methods: I) -> HttpMethodsBuilder<HasItems, NoName>
     where
@@ -236,6 +237,23 @@ impl HttpMethodsCorpus {
         }
 
         items
+    }
+    
+    pub fn methods<I, T>(self, http_methods: I) -> HttpMethodsBuilder<HasItems, NS>
+    where
+        Data: From<T>,
+        I: IntoIterator<Item = T>,
+    {
+        let mut items = self.items.unwrap_or_default();
+
+        items.extend(http_methods.into_iter().map(Data::from));
+
+        HttpMethodsBuilder {
+            items: Some(items),
+            corpus_name: self.corpus_name,
+            _item_state: PhantomData,
+            _name_state: PhantomData,
+        }
     }
     
     /// get a mutable reference to the inner collection of corpus items
