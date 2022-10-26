@@ -26,6 +26,7 @@ pub struct AsyncResponse {
     content_length: usize,
     line_count: usize,
     word_count: usize,
+    method: String,
 
     #[cfg_attr(all(not(feature = "serialize-body"), feature = "serde"), serde(skip))]
     body: Vec<u8>,
@@ -168,6 +169,10 @@ impl Response for AsyncResponse {
     fn word_count(&self) -> usize {
         self.word_count
     }
+    
+    fn method(&self) -> &str {
+        &self.method
+    }
 }
 
 impl Timed for AsyncResponse {
@@ -181,6 +186,7 @@ impl Default for AsyncResponse {
         Self {
             id: RequestId::default(),
             url: Url::parse("http://no.url.provided.local/").unwrap(),
+            method: Default::default(),
             status_code: Default::default(),
             headers: HashMap::default(),
             body: Vec::default(),
