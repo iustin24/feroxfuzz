@@ -425,14 +425,14 @@ where
     IS: CorpusBuildState,
     NS: CorpusBuildState,
 {
-    pub fn method<T>(self, http_method: T) -> Self
+    pub fn method<T>(self, http_method: T) -> HttpMethodsBuilder<HasItems, NS>
     where
         Data: From<T>,
     {
         let mut items = self.items.unwrap_or_default();
         items.push(http_method.into());
 
-        Self {
+        HttpMethodsBuilder {
             items: Some(items),
             corpus_name: self.corpus_name,
             _item_state: PhantomData,
