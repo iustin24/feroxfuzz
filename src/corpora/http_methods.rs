@@ -140,7 +140,19 @@ impl HttpMethodsCorpus {
             _name_state: PhantomData,
         }
     }
-
+    #[inline]
+    pub fn with_methods<I, T>(http_methods: I) -> HttpMethodsBuilder<HasItems, NoName>
+    where
+        Data: From<T>,
+        I: IntoIterator<Item = T>,
+    {
+        HttpMethodsBuilder {
+            items: Some(http_methods.into_iter().map(Data::from).collect()),
+            corpus_name: None,
+            _item_state: PhantomData,
+            _name_state: PhantomData,
+        }
+    }
     /// create a new [`Corpus`] consisting of HTTP methods that are
     /// deemed 'safe', i.e. it doesn't alter the state of the server
     ///
@@ -225,7 +237,7 @@ impl HttpMethodsCorpus {
 
         items
     }
-
+    
     /// get a mutable reference to the inner collection of corpus items
     #[must_use]
     #[inline]
@@ -450,17 +462,5 @@ impl HttpMethodsBuilder<HasItems, HasName> {
     }
 }
 
-#[inline]
-pub fn with_methods<I, T>(http_methods: I) -> HttpMethodsBuilder<HasItems, NoName>
-where
-    Data: From<T>,
-    I: IntoIterator<Item = T>,
-{
-    HttpMethodsBuilder {
-        items: Some(http_methods.into_iter().map(Data::from).collect()),
-        corpus_name: None,
-        _item_state: PhantomData,
-        _name_state: PhantomData,
-    }
-}
+
 
