@@ -80,6 +80,7 @@ impl AsyncResponse {
     #[instrument(skip(resp, elapsed), level = "trace")]
     pub async fn try_from_reqwest_response(
         id: RequestId,
+        method: String,
         resp: reqwest::Response,
         elapsed: Duration,
     ) -> Result<Self, FeroxFuzzError> {
@@ -100,7 +101,7 @@ impl AsyncResponse {
         })?;
 
         response.content_length = body.len();
-
+        response.method = method;
         response.line_count = body
             .as_ref()
             .split(|byte| byte == &b'\n')
