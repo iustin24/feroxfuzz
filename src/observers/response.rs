@@ -346,6 +346,10 @@ where
     fn word_count(&self) -> usize {
         self.response.word_count()
     }
+    
+    fn method(&self) -> &str {
+        self.response.method()
+    }
 }
 
 impl<R> Observer for ResponseObserver<R> where R: Response {}
