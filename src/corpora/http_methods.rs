@@ -449,3 +449,18 @@ impl HttpMethodsBuilder<HasItems, HasName> {
         })
     }
 }
+
+#[inline]
+pub fn with_methods<I, T>(http_methods: I) -> HttpMethodsBuilder<HasItems, NoName>
+where
+    Data: From<T>,
+    I: IntoIterator<Item = T>,
+{
+    HttpMethodsBuilder {
+        items: Some(http_methods.into_iter().map(Data::from).collect()),
+        corpus_name: None,
+        _item_state: PhantomData,
+        _name_state: PhantomData,
+    }
+}
+
